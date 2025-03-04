@@ -1,0 +1,95 @@
+{
+  "name": "pathfinding-visualizer",
+  "version": "1.0.0",
+  "description": "Pathfinding algorithm visualizer",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.js",
+  "homepage": ".",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --base './'", 
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "electron:dev": "concurrently -k \"cross-env BROWSER=none npm run dev\" \"wait-on http://localhost:3000 && nodemon --exec electron . --watch ./ --ext .js,.html,.css,.jsx\"",
+    "electron:build": "npm run build && electron-builder",
+    "electron:preview": "npm run build && electron .",
+    "postinstall": "electron-builder install-app-deps" 
+  },
+  "dependencies": {
+    "@deck.gl/carto": "^8.9.31",
+    "@deck.gl/core": "^8.9.31",
+    "@deck.gl/geo-layers": "^8.9.31",
+    "@deck.gl/layers": "^8.9.31",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.14",
+    "@mui/material": "^5.14.14",
+    "concurrently": "^9.1.2",
+    "deck.gl": "^8.9.31",
+    "maplibre-gl": "^3.5.0",
+    "mui-color-input": "^2.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-map-gl": "^7.1.6",
+    "sass": "^1.69.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "cross-env": "^7.0.3",
+    "electron": "^34.3.0",
+    "electron-builder": "^25.1.8",
+    "electron-devtools-installer": "^4.0.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-jsdoc": "^46.8.2",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "nodemon": "^3.1.0",
+    "vite": "^4.4.5",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.pathfinding.visualizer",
+    "productName": "Pathfinding Visualizer",
+    "asar": false,
+    "asarUnpack": [
+      "**/*.dylib", 
+      "**/*.dll"
+    ],
+    "files": [
+      "build/**/*",
+      "electron/**/*"
+    ],
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
+    "win": {
+      "target": ["nsis"],
+      "extraFiles": [
+        "!darwin/**",
+        "!*.dylib"
+      ]
+    },
+    "mac": {
+      "target": ["dmg"],
+      "identity": null
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Utility"
+    },
+    "extraResources": [ 
+      {
+        "from": "build/assets",
+        "to": "assets",
+        "filter": ["**/*"]
+      }
+    ]
+  },
+  "author": "TAKI EDDINE REHAIL",
+  "license": "MIT"
+}

@@ -1,0 +1,229 @@
+body {
+    background-color: #111;
+    color: #fff;
+    width: 100vw;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+canvas {
+    min-height: 100vh;
+}
+
+#root {
+    height: 100%;
+}
+
+.mapboxgl-canvas {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.test-buttons {
+    display: none;
+}
+
+.graph-debug {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 1000px;
+}
+
+.nav-top {
+    position: fixed;
+    left: 0;
+    top: 16px;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    pointer-events: none;
+    transition: transform 500ms ease-out, opacity 300ms ease-in;
+
+    .side {
+        width: 240px;
+    }
+
+    .slider-container {
+        pointer-events: all;
+        display: flex;
+        flex-direction: column;
+    }
+
+    input, button, a {
+        pointer-events: all;
+    }
+
+}
+
+.nav-right {
+    position: fixed;
+    left: 24px;
+    top: 20px;
+    display: flex;
+    gap: 20px;
+    transition: transform 500ms ease-out, opacity 300ms ease-in;
+
+}
+
+.side-drawer {
+    transition: transform 500ms ease-out, opacity 300ms ease-in;
+   
+}
+
+.loader-container {
+    position: absolute;
+    right: 24px;
+    bottom: 10vh;
+}
+.MuiSlider-root {
+    .MuiSlider-thumb, .MuiSlider-track {
+        transition: box-shadow 300ms ease;
+    }
+}
+
+.Mui-disabled { 
+    filter: saturate(0);
+}
+
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 290px;
+    padding: 25px;
+    background: linear-gradient(180deg, #2A2B37 0%, #1F2029 100%);
+    box-shadow: 7px 0px 20px 0px rgba(0, 0, 0, 0.25);
+    gap: 20px;
+    flex-basis: 100%;
+
+    button {
+        width: 100%;
+    }
+}
+
+.MuiTextField-root {
+    border-radius: 4px;
+    width: 100%;
+
+    .MuiOutlinedInput-notchedOutline {
+        border: 0;
+    }
+
+    .MuiInputBase-input {
+        font-size: 14px;
+        padding-block: 10px;
+    }
+
+    .MuiButtonBase-root {
+        border-radius: 4px;
+        box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.41);
+    }
+}
+
+.styles-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.shortcuts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .shortcut {
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+
+        p {
+            margin-block: 0;
+        }
+    }
+}
+
+.color-container {
+    display: flex;
+
+    button {
+        width: unset;
+    }
+}
+
+.github-corner {
+    z-index: 5000; 
+    position: absolute; 
+    top: 0; 
+    right: 0;
+    border: 0;
+    transition: transform 500ms ease-out, opacity 300ms ease-in;
+    
+    svg {
+        color: #fff;
+    }
+
+    .octo-arm {
+        transform-origin: 130px 106px;
+    }
+
+}
+
+
+
+
+.mobile-controls {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    justify-content: center;
+    display: none;
+    pointer-events: none;
+
+    > * {
+        pointer-events: all;
+    }
+
+    @media (hover: none) {
+        @media not all and (pointer: fine) {
+            display: flex;
+        }
+    }
+}
+
+.maplibregl-control-container {
+    display: none;
+}
+.attrib-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    color: #fff;
+    font-size: 12px;
+
+    .maplibregl-ctrl-attrib-button {
+        display: none;
+    }
+
+    a {
+        color: #fff;
+    }
+}
+
+.nav-bottom {
+    position: fixed;
+    bottom: 30px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
