@@ -6,10 +6,7 @@ import PathfindingAlgorithm from "./algorithms/PathfindingAlgorithm";
 export default class PathfindingState {
     static #instance;
 
-    /**
-     * Singleton class
-     * @returns {PathfindingState}
-     */
+
     constructor() {
         if (!PathfindingState.#instance) {
             this.endNode = null;
@@ -26,18 +23,10 @@ export default class PathfindingState {
         return this.graph.startNode;
     }
 
-    /**
-     * 
-     * @param {Number} id OSM node id
-     * @returns {import("./Node").default} node
-     */
     getNode(id) {
         return this.graph?.getNode(id);
     }
 
-    /**
-     * Resets to default state
-     */
     reset() {
         this.finished = false;
         if(!this.graph) return;
@@ -46,9 +35,6 @@ export default class PathfindingState {
         }
     }
 
-    /**
-     * Resets state and initializes new pathfinding animation
-     */
     start(algorithm) {
         this.reset();
         switch(algorithm) {
@@ -70,10 +56,6 @@ export default class PathfindingState {
         this.algorithm.start(this.startNode, this.endNode);
     }
 
-    /**
-     * Progresses the pathfinding algorithm by one step/iteration
-     * @returns {(import("./Node").default)[]} array of nodes that were updated
-     */
     nextStep() {
         const updatedNodes = this.algorithm.nextStep();
         if(this.algorithm.finished || updatedNodes.length === 0) {
