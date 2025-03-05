@@ -1,16 +1,20 @@
-import { Button, IconButton, Snackbar, Alert, CircularProgress, Fade, Tooltip, Drawer, MenuItem, Select, InputLabel, FormControl, Menu } from "@mui/material";
-import { PlayArrow, Settings, Pause} from "@mui/icons-material";
-import { useState, useRef, useImperativeHandle, forwardRef } from "react";
-import { LOCATIONS } from "../config";
+import { Button, IconButton, Typography, Snackbar, Alert, CircularProgress, Fade, Tooltip, Drawer, MenuItem, Select, InputLabel, FormControl, Menu, Backdrop, Stepper, Step, StepLabel } from "@mui/material";
+import { MuiColorInput } from "mui-color-input";
+import { PlayArrow, Settings, Movie, Pause, Replay } from "@mui/icons-material";
+import Slider from "./Slider";
+import { useState, useEffect, useRef, useImperativeHandle, forwardRef } from "react";
+import { INITIAL_COLORS, LOCATIONS } from "../config";
+import { arrayToRgb, rgbToArray } from "../helpers";
 
-const Interface = forwardRef(({ canStart, started, animationEnded, playbackOn, time, settings, loading,cinematic, placeEnd,changeAlgorithm, setPlaceEnd, setCinematic, startPathfinding, toggleAnimation, clearPath, changeLocation }, ref) => {
+const Interface = forwardRef(({ canStart, started, animationEnded, playbackOn, time, maxTime, settings, colors, loading, timeChanged, cinematic, placeEnd, changeRadius, changeAlgorithm, setPlaceEnd, setCinematic, setSettings, setColors, startPathfinding, toggleAnimation, clearPath, changeLocation }, ref) => {
     const [sidebar, setSidebar] = useState(false);
     const [snack, setSnack] = useState({
         open: false,
         message: "",
         type: "error",
     });
-
+    const [showTutorial, setShowTutorial] = useState(false);
+    const [activeStep, setActiveStep] = useState(0);
     const [helper, setHelper] = useState(false);
     const [menuAnchor, setMenuAnchor] = useState(null);
     const menuOpen = Boolean(menuAnchor);
@@ -31,6 +35,15 @@ const Interface = forwardRef(({ canStart, started, animationEnded, playbackOn, t
 
     function closeHelper() {
         setHelper(false);
+    }
+
+    function handleTutorialChange(direction) {
+        if(activeStep >= 2 && direction > 0) {
+            setShowTutorial(false);
+            return;
+        }
+        
+        setActiveStep(Math.max(activeStep + direction, 0));
     }
 
     // Start pathfinding or toggle playback
@@ -72,10 +85,23 @@ const Interface = forwardRef(({ canStart, started, animationEnded, playbackOn, t
             leftDown.current = false;
             toggleAnimation(false, 1);
         }
-        else if(e.code === "KeyR" && (animationEnded || !started)) clearPath();
+        else if(e.code === "KeyC" && (animationEnded || !started)) clearPath();
     };
 
+    // Show cinematic mode helper
+    useEffect(() => {
+        if(!cinematic) return;
+        setHelper(true);
+        setTimeout(() => {
+            helperTime.current = 2500;
+        }, 200);
+    }, [cinematic]);
 
+    useEffect(() => {
+        if(localStorage.getItem("path_sawtutorial")) return;
+        setShowTutorial(true);
+        localStorage.setItem("path_sawtutorial", true);
+    }, []);
 
     return (
         <>
@@ -113,13 +139,7 @@ const Interface = forwardRef(({ canStart, started, animationEnded, playbackOn, t
                 </Alert>
             </Snackbar>
 
-            <Snackbar 
-                anchorOrigin={{ vertical: "top", horizontal: "center" }} 
-                open={helper} 
-                autoHideDuration={helperTime.current} 
-                onClose={closeHelper}
-            >
-            </Snackbar>
+
 
             <div className="mobile-controls">
                 <Button onClick={() => {setPlaceEnd(!placeEnd);}} style={{ color: "#fff", backgroundColor: "#404156", paddingInline: 30, paddingBlock: 7 }} variant="contained">
@@ -188,6 +208,31 @@ const Interface = forwardRef(({ canStart, started, animationEnded, playbackOn, t
                                 }}>{location.name}</MenuItem>
                             )}
                         </Menu>
+                    </div>
+
+                    <div className="side slider-container">
+                        <Typography id="area-slider" >
+                            Area radius: {settings.radius}km ({(settings.radius / 1.609).toFixed(1)}mi)
+                        </Typography>
+                        <Slider disabled={started && !animationEnded} min={2} max={20} step={1} value={settings.radius} onChangeCommited={() => { changeRadius(settings.radius); }} onChange={e => { setSettings({...settings, radius: Number(e.target.value)}); }} className="slider" aria-labelledby="area-slider" style={{ marginBottom: 1 }} 
+                            marks={[
+                                {
+                                    value: 2,
+                                    label: "2km"
+                                },
+                                {
+                                    value: 20,
+                                    label: "20km"
+                                }
+                            ]} 
+                        />
+                    </div>
+
+                    <div className="side slider-container">
+                        <Typography id="speed-slider" >
+                            Animation speed
+                        </Typography>
+                        <Slider min={1} max={200} value={settings.speed} onChange={e => { setSettings({...settings, speed: Number(e.target.value)}); }} className="slider" aria-labelledby="speed-slider" style={{ marginBottom: 1 }} />
                     </div>
                 </div>
             </Drawer>
