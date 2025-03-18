@@ -235,6 +235,11 @@ const Interface = forwardRef(({ canStart, started, animationEnded, playbackOn, t
                         <Slider min={1} max={200} value={settings.speed} onChange={e => { setSettings({...settings, speed: Number(e.target.value)}); }} className="slider" aria-labelledby="speed-slider" style={{ marginBottom: 1 }} />
                     </div>
                 </div>
+                <div>
+                    <p>INSTRUCTIONS:</p>
+                    <p>LMB: place start node</p>
+                    <p>RMB: place end node</p>
+                </div>
             </Drawer>
             <div className={`nav-bottom ${cinematic ? "cinematic" : ""}`}>
                 <IconButton disabled={!canStart} onClick={handlePlay} style={{ backgroundColor: "#46B780", width: 60, height: 60 }} size="large">
